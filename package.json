@@ -1,0 +1,32 @@
+{
+  "name": "yota-account-system",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/eslint-config": "^0.1.1",
+    "@nuxtjs/eslint-config-typescript": "^12.0.0",
+    "@types/node": "^18",
+    "eslint": "^8.40.0",
+    "nuxt": "^3.4.3"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.2.96",
+    "@pinia/nuxt": "^0.4.10",
+    "@vuepic/vue-datepicker": "^5.1.0",
+    "mongoose": "^7.1.1",
+    "pinia": "^2.0.36",
+    "sass": "^1.62.1",
+    "vite-plugin-vuetify": "^1.0.2",
+    "vuetify": "^3.2.3"
+  },
+  "overrides": {
+    "vue": "latest"
+  }
+}
