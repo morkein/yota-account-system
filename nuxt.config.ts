@@ -3,6 +3,9 @@
 import vuetify from "vite-plugin-vuetify";
 
 export default defineNuxtConfig({
+    runtimeConfig: {
+        MONGO_URI: process.env.MONGO_URI,
+    },
     css: ['vuetify/styles', '@mdi/font/css/materialdesignicons.min.css'],
     build: {
         transpile: ['vuetify', '@vuepic/vue-datepicker']
