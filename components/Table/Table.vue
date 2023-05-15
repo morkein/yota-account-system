@@ -1,26 +1,40 @@
 <script setup lang="ts">
   import {ref} from 'vue';
   import {VDataTable} from 'vuetify/labs/VDataTable';
-  import {headers, items} from './constants';
+  import {headers} from './constants';
   import Datepicker from '@vuepic/vue-datepicker';
   import '@vuepic/vue-datepicker/dist/main.css';
+  import { useRecordStore } from '~/components/Storage/recordStore'
+  import { IRecord } from '~/types'
+
+  const recordStore = useRecordStore();
 
   const date = ref(Date.now());
-  const showDialog = ref(false);
+  const dialog = ref<any>(null);
 
   const addItem = () => {
-      showDialog.value = true;
+      dialog.value?.open(undefined, (item: IRecord) => {
+          recordStore.create(item);
+      });
   }
 
   const editItem = (item: any) => {
-      showDialog.value = true;
+      dialog.value?.open({...item}, (item: IRecord) => {
+          recordStore.update(item);
+      });
   };
-  const deleteItem = (item: any) => {};
+  const deleteItem = (item: any) => {
+      recordStore.delete(item._id);
+  };
+
+  onMounted(() => {
+      recordStore.getRecords();
+  })
 </script>
 
 <template>
     <v-card>
-        <v-data-table :headers="headers" :items="items" item-value="ID">
+        <v-data-table :headers="headers" :items="recordStore.records" item-value="ID" :loading="recordStore.loading">
             <template #top>
                 <v-toolbar flat color="white" class="px-4">
                     <div style="max-width: 350px;">
@@ -53,7 +67,7 @@
             </template>
         </v-data-table>
     </v-card>
-    <Dialog v-model:dialog="showDialog"/>
+    <Dialog ref="dialog"/>
 </template>
 
 <script lang="ts">

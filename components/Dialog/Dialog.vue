@@ -1,6 +1,7 @@
 <script setup lang="ts">
    import { ref } from "vue";
    import {VForm} from "vuetify/components";
+   import { IRecord } from '~/types'
 
    const idRules = [
        (value: string) => {
@@ -33,23 +34,32 @@
        }
    ];
 
-   const props = defineProps({
-       dialog: Boolean,
-   })
-   const emit = defineEmits(['update:dialog'])
-
+   const show = ref(false);
    const form = ref<VForm | null>(null);
+   const item = ref<IRecord>({id: 0, time: '', operationType: '', summ: 0, paymentType: ''});
+   const onSuccess = ref<any>();
+
+   const open = (data = {id: null, time: null, operationType: null, summ: null, paymentType: null}, success: (item: IRecord) => void) => {
+       item.value = data as any;
+       onSuccess.value = success;
+       show.value = true;
+   }
 
    const onSave = async () => {
        const validation = await form.value?.validate();
        if (validation?.valid) {
-         emit('update:dialog', false);
+           show.value = false;
+           onSuccess.value(item.value);
        }
    }
+
+   defineExpose({
+       open,
+   })
 </script>
 
 <template>
-    <v-dialog :model-value="dialog" persistent max-width="500px">
+    <v-dialog :model-value="show" persistent max-width="500px">
         <v-card>
             <v-card-title>
                 <span class="text-h5">Запись</span>
@@ -60,6 +70,8 @@
                         <v-row>
                             <v-col>
                                 <v-text-field
+                                    v-model="item.id"
+                                    type="number"
                                     color="info"
                                     label="ID"
                                     required
@@ -70,6 +82,7 @@
                         <v-row>
                             <v-col>
                                 <v-text-field
+                                    v-model="item.time"
                                     color="info"
                                     label="Время"
                                     required
@@ -80,6 +93,7 @@
                         <v-row>
                             <v-col>
                                 <v-text-field
+                                    v-model="item.operationType"
                                     color="info"
                                     label="Тип операции"
                                     required
@@ -90,6 +104,8 @@
                         <v-row>
                             <v-col>
                                 <v-text-field
+                                    v-model="item.summ"
+                                    type="number"
                                     color="info"
                                     label="Сумма"
                                     required
@@ -100,6 +116,7 @@
                         <v-row>
                             <v-col>
                                 <v-text-field
+                                    v-model="item.paymentType"
                                     color="info"
                                     label="Вид оплаты"
                                     required
@@ -116,7 +133,7 @@
                 <v-btn
                     color="info"
                     variant="text"
-                    @click="$emit('update:dialog', false)"
+                    @click="show = false"
                 >
                     Отменить
                 </v-btn>

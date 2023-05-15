@@ -3,21 +3,25 @@ import { IRecord } from "~/types";
 
 export const useRecordStore = defineStore("record-store", {
     state: () => ({
+        loading: false,
         records: [] as IRecord[],
     }),
     actions: {
         //get all
         async getRecords() {
-            try{ 
+            try{
+                this.loading = true;
                 let data = await $fetch<IRecord[]> ("/api/records");
                 this.records = data;
                 return data as IRecord[];
             } catch (e) {
                 //Alert place
                 throw createError({
-                    message: (e as Error).message, 
+                    message: (e as Error).message,
                 })
                 //Alert place
+            } finally {
+                this.loading = false;
             }
         },
         //create record
@@ -27,11 +31,11 @@ export const useRecordStore = defineStore("record-store", {
                 body: record,
             })
             .catch((e) =>{
-                //Alert place 
+                //Alert place
                 throw createError({
-                    message: (e as Error).message, 
+                    message: (e as Error).message,
                 })
-                //Alert place 
+                //Alert place
             })
             .then(async () => {
                 await this.getRecords();
@@ -41,38 +45,38 @@ export const useRecordStore = defineStore("record-store", {
         },
         //Update Record
         async update(record: IRecord){
-            await $fetch('/api/records/:id', {
+            await $fetch(`/api/records/${record._id}`, {
                 method: "PUT",
                 body: record,
             })
             .catch((e)=>{
                 //Alert place
                 throw createError({
-                    message: (e as Error).message, 
+                    message: (e as Error).message,
                 })
-                //Alert place 
+                //Alert place
             })
             .then(async () => {
                 await this.getRecords();
-                //Alert place 
-                //Alert place 
+                //Alert place
+                //Alert place
             })
         },
         async delete(id: string) {
-            await $fetch('/api/records/:id', {
+            await $fetch(`/api/records/${id}`, {
                 method: "DELETE",
             })
             .catch((e)=>{
                 //Alert place
                 throw createError({
-                    message: (e as Error).message, 
+                    message: (e as Error).message,
                 })
-                //Alert place 
+                //Alert place
             })
             .then(async() => {
                 await this.getRecords();
-                //Alert place 
-                //Alert place 
+                //Alert place
+                //Alert place
             });
         },
     } ,

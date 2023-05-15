@@ -1,9 +1,9 @@
 export const headers = [
     { title: 'ID', key: 'id', align: 'start', sortable: true },
     { title: 'Время', key: 'time', align: 'end', sortable: true },
-    { title: 'Тип операции', key: 'operation_type', align: 'start', sortable: true },
+    { title: 'Тип операции', key: 'operationType', align: 'start', sortable: true },
     { title: 'Сумма', key: 'summ', align: 'end', sortable: true },
-    { title: 'Вид оплаты', key: 'payment_type', align: 'start', sortable: false },
+    { title: 'Вид оплаты', key: 'paymentType', align: 'start', sortable: false },
     { title: 'Действия', key: 'actions', align: 'start', sortable: false },
 ]
 
