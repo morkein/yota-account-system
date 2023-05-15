@@ -1,4 +1,5 @@
+import RecordModel from "~~/server/models/Record.model"
 
 export default defineEventHandler(async event => {
-    return 'Records works'
+    return await RecordModel.find().populate('id');
 })
