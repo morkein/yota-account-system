@@ -2,45 +2,16 @@
    import { ref } from "vue";
    import {VForm} from "vuetify/components";
    import { IRecord } from '~/types'
-
-   const idRules = [
-       (value: string) => {
-         if (value) return true;
-         return 'Поле ID обязательно для заполнения'
-       }
-   ];
-   const timeRules = [
-       (value: string) => {
-           if (value) return true;
-           return 'Поле Время обязательно для заполнения'
-       }
-   ];
-   const operationTypeRules = [
-       (value: string) => {
-           if (value) return true;
-           return 'Поле Тип операции обязательно для заполнения'
-       }
-   ];
-   const summRules = [
-       (value: string) => {
-           if (value) return true;
-           return 'Поле Сумма обязательно для заполнения'
-       }
-   ];
-   const paymentTypeRules = [
-       (value: string) => {
-           if (value) return true;
-           return 'Поле Вид оплаты обязательно для заполнения'
-       }
-   ];
+   import {operationTypesItems, paymentTypesItems} from './constants';
+   import {idRules, operationTypeRules, summRules, paymentTypeRules} from './rules';
 
    const show = ref(false);
    const form = ref<VForm | null>(null);
-   const item = ref<IRecord>({id: 0, time: '', operationType: '', summ: 0, paymentType: ''});
+   const item = ref<IRecord>({id: 0, date: '', operationType: '', summ: 0, paymentType: ''});
    const onSuccess = ref<any>();
    const date = ref(Date.now());
 
-   const open = (data = {id: null, time: null, operationType: null, summ: null, paymentType: null}, success: (item: IRecord) => void) => {
+   const open = (data = {id: null, date: null, operationType: null, summ: null, paymentType: null}, success: (item: IRecord) => void) => {
        item.value = data as any;
        onSuccess.value = success;
        show.value = true;
@@ -82,21 +53,11 @@
                         </v-row>
                         <v-row>
                             <v-col>
-                                <v-text-field
-                                    v-model="item.time"
-                                    color="info"
-                                    label="Время"
-                                    required
-                                    :rules="timeRules"
-                                />
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col>
                                 <v-select
                                     v-model="item.operationType"
+                                    return-object
                                     label="Тип операции"
-                                    :items="['Смарт сим', 'Модем сим', 'Изменение ПД', 'Замена сим', 'Расторжение', 'Претензия', 'Возврат ДС']"
+                                    :items="operationTypesItems"
                                     required
                                     :rules="operationTypeRules"
                                 />
@@ -118,8 +79,9 @@
                             <v-col>
                                 <v-select
                                     v-model="item.paymentType"
+                                    return-object
                                     label="Тип оплаты"
-                                    :items="['Наличные', 'Безналичные']"
+                                    :items="paymentTypesItems"
                                     required
                                     :rules="paymentTypeRules"
                                 />

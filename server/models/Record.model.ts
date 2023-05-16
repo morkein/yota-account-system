@@ -7,12 +7,12 @@ const schema: mongoose.Schema = new mongoose.Schema(
             type: Number,
             requied: true,
         },
-        time: {
+        date: {
             type: String,
             requied: true,
         },
         operationType: {
-            type: String,
+            type: Object,
             requied: true,
         },
         summ: {
@@ -20,9 +20,9 @@ const schema: mongoose.Schema = new mongoose.Schema(
             requied: true,
         },
         paymentType: {
-            type: String,
+            type: Object,
             requied: true,
-        }    
+        }
 
     },
     { timestamps: true}

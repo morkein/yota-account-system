@@ -6,14 +6,17 @@
   import '@vuepic/vue-datepicker/dist/main.css';
   import { useRecordStore } from '~/composables/Storage/recordStore'
   import { IRecord } from '~/types'
+  import { DateTime } from "luxon";
+  import { storeToRefs } from 'pinia'
 
   const recordStore = useRecordStore();
+  const { date, records, loading } = storeToRefs(recordStore)
 
-  const date = ref(Date.now());
   const dialog = ref<any>(null);
 
   const addItem = () => {
       dialog.value?.open(undefined, (item: IRecord) => {
+          item.date = date.value;
           recordStore.create(item);
       });
   }
@@ -27,6 +30,9 @@
       recordStore.delete(item._id);
   };
 
+  const pickerFormat = (date: Date) => DateTime.fromISO(date.toISOString()).toLocaleString(DateTime.DATE_FULL, {locale: 'ru'});
+
+
   onMounted(() => {
       recordStore.getRecords();
   })
@@ -34,21 +40,29 @@
 
 <template>
     <v-card>
-        <v-data-table :headers="headers" :items="recordStore.records" item-value="ID" :loading="recordStore.loading">
+        <v-data-table :headers="headers" :items="records" item-value="ID" :loading="loading" no-data-text="Записей не найдено">
             <template #top>
                 <v-toolbar flat color="white" class="px-4">
                     <div style="max-width: 350px;">
                         <Datepicker
-                            v-model="date"
+                            :model-value="date"
                             :teleport="true"
                             position="left"
                             :clearable="false"
                             locale="ru"
+                            :enable-time-picker="false"
+                            :format="pickerFormat"
+                            select-text="Ок"
+                            cancel-text="Закрыть"
+                            @update:model-value="recordStore.setDate($event)"
                         ></Datepicker>
                     </div>
                     <v-spacer/>
                     <v-btn @click="addItem">Добавить запись</v-btn>
                 </v-toolbar>
+            </template>
+            <template #item.date="{ item }">
+                {{ DateTime.fromISO(item.raw.date).toLocaleString(DateTime.TIME_24_SIMPLE) }}
             </template>
             <template #item.actions="{ item }">
                 <v-icon

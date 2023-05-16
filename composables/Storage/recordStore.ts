@@ -5,13 +5,18 @@ export const useRecordStore = defineStore("record-store", {
     state: () => ({
         loading: false,
         records: [] as IRecord[],
+        date: new Date(Date.now()).toISOString(),
     }),
     actions: {
+        async setDate(date: string) {
+            this.date = new Date(date).toISOString();
+            await this.getRecords();
+        },
         //get all
         async getRecords() {
             try{
                 this.loading = true;
-                let data = await $fetch<IRecord[]> ("/api/records");
+                let data = await $fetch<IRecord[]> (`/api/records?date=${this.date}`);
                 this.records = data;
                 return data as IRecord[];
             } catch (e) {

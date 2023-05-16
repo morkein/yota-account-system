@@ -1,9 +1,10 @@
 import Joi from "joi";
+import { OperationType, PaymentType } from '~/types'
 
 export const RecordSchema = Joi.object({
     id: Joi.number().integer().positive(),
-    time: Joi.string().required(),
-    operationType: Joi.string().required(),
+    date: Joi.string().required(),
+    operationType: Joi.object<OperationType>().required(),
     summ: Joi.number().positive(),
-    paymentType: Joi.string().required(),
+    paymentType: Joi.object<PaymentType>().required(),
 });
