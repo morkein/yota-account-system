@@ -38,6 +38,7 @@
    const form = ref<VForm | null>(null);
    const item = ref<IRecord>({id: 0, time: '', operationType: '', summ: 0, paymentType: ''});
    const onSuccess = ref<any>();
+   const date = ref(Date.now());
 
    const open = (data = {id: null, time: null, operationType: null, summ: null, paymentType: null}, success: (item: IRecord) => void) => {
        item.value = data as any;
@@ -92,10 +93,10 @@
                         </v-row>
                         <v-row>
                             <v-col>
-                                <v-text-field
+                                <v-select
                                     v-model="item.operationType"
-                                    color="info"
                                     label="Тип операции"
+                                    :items="['Смарт сим', 'Модем сим', 'Изменение ПД', 'Замена сим', 'Расторжение', 'Претензия', 'Возврат ДС']"
                                     required
                                     :rules="operationTypeRules"
                                 />
@@ -115,10 +116,10 @@
                         </v-row>
                         <v-row>
                             <v-col>
-                                <v-text-field
+                                <v-select
                                     v-model="item.paymentType"
-                                    color="info"
-                                    label="Вид оплаты"
+                                    label="Тип оплаты"
+                                    :items="['Наличные', 'Безналичные']"
                                     required
                                     :rules="paymentTypeRules"
                                 />

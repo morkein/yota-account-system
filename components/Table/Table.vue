@@ -4,7 +4,7 @@
   import {headers} from './constants';
   import Datepicker from '@vuepic/vue-datepicker';
   import '@vuepic/vue-datepicker/dist/main.css';
-  import { useRecordStore } from '~/components/Storage/recordStore'
+  import { useRecordStore } from '~/composables/Storage/recordStore'
   import { IRecord } from '~/types'
 
   const recordStore = useRecordStore();
