@@ -11,5 +11,5 @@ export const operationTypesItems: OperationType[] = [
 ]
 export const paymentTypesItems: PaymentType[] = [
   { value: 0, title: 'Наличные' },
-  { value: 0, title: 'Безналичные' }
+  { value: 1, title: 'Безналичные' }
 ]
